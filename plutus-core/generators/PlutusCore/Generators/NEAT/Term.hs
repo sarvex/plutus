@@ -388,7 +388,7 @@ defaultFunTypes = Map.fromList [(TyFunG (TyBuiltinG TyIntegerG) (TyFunG (TyBuilt
                    ,[CharToString])
                   ,(TyFunG TypeStringG (TyFunG TypeStringG TypeStringG)
                    ,[Append])
-                  ,(TyFunG TypeStringG (TyBuiltinG TyUnitG)
+                  ,(TyForallG (Type()) (TyFunG TypeStringG (TyFunG (TyVarG FZ) (TyVarG FZ)))
                    ,[Trace])
                   ]
 

@@ -222,7 +222,7 @@ pubkeyHashOnChainAndOffChain = property $ do
         onchainProg = $$(PlutusTx.compile [|| \pk expected -> if expected PlutusTx.== Validation.pubKeyHash pk then PlutusTx.trace "correct" () else PlutusTx.traceError "not correct" ||])
         script = Scripts.fromCompiledCode $ onchainProg `applyCode` liftCode pk `applyCode` liftCode offChainHash
         result = runExcept $ evaluateScript script
-    Hedgehog.assert (result == Right ["correct"])
+    result Hedgehog.=== Right ["correct"]
 
 -- | Check that 'missingValueSpent' is the smallest value needed to
 --   meet the requirements.
@@ -282,4 +282,3 @@ inverseProp = property $ do
   [b, e] <- forAll $ sort <$> replicateM 2 (Gen.integral (fromIntegral <$> Range.linearBounded @Int))
   let slotRange = Interval.interval (Slot b) (Slot e)
   Hedgehog.assert $ slotRange == TimeSlot.posixTimeRangeToSlotRange (TimeSlot.slotRangeToPOSIXTimeRange slotRange)
-
